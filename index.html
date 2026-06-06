@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>قرآني | مشغل القرآن الكريم والإنتاجية</title>
+
+  <!-- SEO Tags -->
+  <meta name="description"
+    content="تطبيق قرآني - استمع للقرآن الكريم، نظم مهامك اليومية مع كل شيخ، وحافظ على تركيزك باستخدام مؤقت الإنتاجية (25 و 45 دقيقة). يعمل بدون إنترنت PWA.">
+  <meta name="keywords" content="القرآن الكريم, مشغل قرآن, تودو, تنظيم مهام, مؤقت انتاجية, بومودورو, PWA, تطبيق إسلامي">
+
+
+  <!-- Favicon and PWA -->
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0B0F19">
+
+  <!-- Google Fonts (Amiri & Tajawal) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- App Container -->
+  <div class="app-container">
+
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <svg class="gold-glow" width="36" height="36" viewBox="0 0 512 512" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <!-- Mini Crescent & Star -->
+          <path d="M 320,140 A 120,120 0 1,0 320,372 A 100,100 0 1,1 320,140 Z" fill="url(#headerGold)" />
+          <polygon points="310,210 315,225 330,225 318,235 322,250 310,240 298,250 302,235 290,225 305,225"
+            fill="url(#headerGold)" />
+          <defs>
+            <linearGradient id="headerGold" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFE082" />
+              <stop offset="100%" stop-color="#FFB300" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="logo-text">
+          <h1>قرآني</h1>
+          <span>مَسَاحَتُكَ القرآنية والإنتاجية</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Admin Panel Button -->
+        <button id="adminBtn" class="btn btn-outline" title="لوحة التحكم وإدارة القراء">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="9"></rect>
+            <rect x="14" y="3" width="7" height="5"></rect>
+            <rect x="14" y="12" width="7" height="9"></rect>
+            <rect x="3" y="16" width="7" height="5"></rect>
+          </svg>
+          <span>إدارة القراء</span>
+        </button>
+
+        <!-- PWA Install Button -->
+        <button id="installBtn" class="btn btn-gold btn-install hidden" title="تثبيت التطبيق على جهازك">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>تثبيت التطبيق</span>
+        </button>
+
+       
+      </div>
+    </header>
+
+    <!-- Main Grid Dashboard -->
+    <main class="dashboard-grid">
+
+      <!-- Right Side: Quran Player & Reciters -->
+      <section class="grid-card main-player-card" aria-label="مشغل القرآن الكريم">
+        <div class="card-header">
+          <div class="title-with-icon">
+            <svg class="header-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18V5l12-2v13"></path>
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+            <h2>القارئ والمصحف الشريف</h2>
+          </div>
+
+        </div>
+
+        <div class="player-content-wrapper">
+          <!-- Reciters List -->
+          <div class="reciters-sidebar">
+            <div class="search-box">
+              <input type="text" id="sheikhSearch" placeholder="ابحث عن قارئ...">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+
+            <div class="reciters-list" id="recitersList">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Active Reciter Tracks & Visual Player -->
+          <div class="active-player-panel">
+            <div class="active-sheikh-info">
+              <div class="avatar-large" id="playerSheikhAvatar">م</div>
+              <div class="details">
+                <h3 id="playerSheikhName">الشيخ مشاري العفاسي</h3>
+                <p id="playerTrackName">سورة الفاتحة</p>
+              </div>
+              <div class="player-action-badges">
+                <div class="source-badge" id="sourceBadge" title="يحدد ما إذا كان الصوت يعمل من الإنترنت أو ملف محلي">
+                  إنترنت</div>
+                <button id="downloadCurrentTrackBtn" class="btn-single-download" title="تحميل هذه السورة للتشغيل أوفلاين">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Custom Audio Element -->
+            <audio id="mainAudio" preload="auto"></audio>
+
+            <!-- Visualizer Disk representation -->
+            <div class="visualizer-container">
+              <div class="spinning-disk-glow"></div>
+              <div class="spinning-disk" id="spinningDisk">
+                <div class="disk-inner">
+                  <span class="quran-text-center">قرآن</span>
+                </div>
+              </div>
+
+              <!-- Wave Visualizer Bars (CSS animated) -->
+              <div class="wave-visualizer" id="waveVisualizer">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+              </div>
+            </div>
+
+            <!-- Track List for Selected Sheikh -->
+            <div class="tracks-list-container">
+              <h4>سور المصحف المتاحة</h4>
+              <div class="tracks-list" id="tracksList">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- Player Controls -->
+            <div class="player-controls-container">
+              <!-- Timeline Slider -->
+              <div class="timeline-container">
+                <span class="time-label" id="currentTime">00:00</span>
+                <input type="range" id="progressSlider" class="slider" min="0" max="100" value="0">
+                <span class="time-label" id="durationTime">00:00</span>
+              </div>
+
+              <!-- Control Action Buttons -->
+              <div class="control-actions">
+                <button class="btn-icon" id="loopBtn" title="تكرار السورة">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="17 1 21 5 17 9"></polyline>
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                    <polyline points="7 23 3 19 7 15"></polyline>
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                  </svg>
+                </button>
+
+                <button class="btn-icon" id="prevBtn" title="السورة السابقة">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                    <line x1="19" y1="5" x2="19" y2="19"></line>
+                  </svg>
+                </button>
+
+                <button class="btn-play-pause" id="playPauseBtn" title="تشغيل / إيقاف مؤقت">
+                  <svg class="play-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  <svg class="pause-icon hidden" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="4" width="4" height="16"></rect>
+                    <rect x="14" y="4" width="4" height="16"></rect>
+                  </svg>
+                </button>
+
+                <button class="btn-icon" id="nextBtn" title="السورة التالية">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                    <line x1="5" y1="5" x2="5" y2="19"></line>
+                  </svg>
+                </button>
+
+                <!-- Speed Control -->
+                <button class="btn-icon speed-badge" id="speedBtn" title="سرعة التشغيل">1.0x</button>
+              </div>
+
+              <!-- Volume Slider -->
+              <div class="volume-container">
+                <button class="btn-icon" id="muteBtn" title="كتم الصوت">
+                  <svg id="volumeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                  </svg>
+                </button>
+                <input type="range" id="volumeSlider" class="slider volume-slider" min="0" max="100" value="80">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Left Column: Todo List & Focus Timer -->
+      <div class="left-column">
+
+        <!-- Section 1: Pomodoro Timer -->
+        <section class="grid-card timer-card" aria-label="عداد الوقت والتركيز">
+          <div class="card-header">
+            <div class="title-with-icon">
+              <svg class="header-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <h2>عداد الوقت</h2>
+            </div>
+          </div>
+
+          <div class="timer-content">
+            <!-- Circular Progress Ring Timer -->
+            <div class="timer-display-wrapper">
+              <svg class="timer-ring" width="180" height="180">
+                <circle class="ring-bg" cx="90" cy="90" r="80" stroke-width="8" fill="transparent"></circle>
+                <circle class="ring-progress" id="timerProgress" cx="90" cy="90" r="80" stroke-width="8"
+                  fill="transparent" stroke-dasharray="502.6" stroke-dashoffset="0"></circle>
+              </svg>
+              <div class="timer-digits" id="timerDigits">25:00</div>
+            </div>
+
+            <!-- Timer Preset Options -->
+            <div class="timer-presets">
+              <button class="btn btn-preset active" data-time="1500">25 دقيقة</button>
+              <button class="btn btn-preset" data-time="2700">45 دقيقة</button>
+              <div class="custom-time-input">
+                <input type="number" id="customMinutes" min="1" max="180" placeholder="مخصّص">
+                <button class="btn btn-outline btn-xs" id="applyCustomTime">تطبيق</button>
+              </div>
+            </div>
+
+            <!-- Timer Action Controls -->
+            <div class="timer-controls">
+              <button class="btn btn-gold" id="startTimerBtn">بدء التركيز</button>
+              <button class="btn btn-outline hidden" id="pauseTimerBtn">إيقاف مؤقت</button>
+              <button class="btn btn-danger hidden" id="resetTimerBtn">إعادة ضبط</button>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section 2: Todo List linked to active Reciter -->
+        <section class="grid-card todo-card" aria-label="قائمة المهام اليومية">
+          <div class="card-header">
+            <div class="title-with-icon">
+              <svg class="header-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              <h2>مهام </h2>
+            </div>
+          </div>
+
+          <div class="todo-content">
+            <!-- Todo Add Form -->
+            <form id="todoForm" class="todo-form" onsubmit="event.preventDefault();">
+              <input type="text" id="todoInput" placeholder="أضف مهمة جديدة..."
+                required>
+              <button type="submit" class="btn btn-gold btn-square" title="إضافة المهمة">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </form>
+
+            <!-- Todo Items List -->
+            <div class="todo-list" id="todoList">
+              <!-- Dynamically populated based on active sheikh -->
+            </div>
+
+            <!-- Todo Stats -->
+            <div class="todo-footer">
+              <span id="todoCount">يوجد 0 مهام متبقية</span>
+              <button id="clearCompletedTodos" class="btn-link">مسح المهام المكتملة</button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+
+
+    <!-- Invoice Themed Footer (اسم المطور في الفاتورة تحت) -->
+    <footer class="invoice-footer">
+      <div class="invoice-container">
+        <div class="invoice-decor-line"></div>
+        <div class="invoice-details">
+
+          <div class="invoice-block invoice-info">
+            <div class="invoice-logo">قرآني <span class="small-badge">نظام تشغيل PWA</span></div>
+            <p class="invoice-desc">تطبيق متكامل لتشغيل وتتبع الاستماع للقرآن الكريم مع مؤقت وجدول مهام متطور يعمل
+              بالكامل أوفلاين.</p>
+          </div>
+
+          <div class="invoice-block invoice-meta">
+            <h4>تفاصيل التطوير والتفويض</h4>
+            <table>
+              <tr>
+                <td><strong>اسم المشروع:</strong></td>
+                <td>قرآني (Quran Player & Todo)</td>
+              </tr>
+             
+              <tr>
+                <td><strong>الترخيص:</strong></td>
+                <td>مفتوح المصدر (MIT)</td>
+              </tr>
+              <tr>
+                <td><strong>الحالة:</strong></td>
+                <td>جاهز للتثبيت أونلاين/أوفلاين</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="invoice-block invoice-actions">
+            <h4>روابط المشروع </h4>
+            <a href="https://github.com/mohamadsaid79/quran-player-pwa" target="_blank" rel="noopener noreferrer"
+              class="btn btn-outline btn-github">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+              </svg>
+              <span>مستودع المشروع على GitHub</span>
+            </a>
+            <div class="timestamp-sig">
+              <span class="seal">مصدق ومثبت PWA</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="invoice-bottom">
+          <p>© 2026 جميع الحقوق محفوظة لبرنامج قرآني. صُنع بحب لخدمة كتاب الله.</p>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Admin Modal -->
+  <div id="adminModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>لوحة إدارة القراء</h3>
+        <button id="closeAdminModal" class="btn-close-modal">&times;</button>
+      </div>
+      
+      <!-- Tabs header -->
+      <div class="modal-tabs">
+        <button class="tab-btn active" data-tab="add-reciter-tab">إضافة قارئ جديد</button>
+        <button class="tab-btn" data-tab="manage-reciters-tab">القراء الحاليون</button>
+      </div>
+
+      <div class="tab-content" id="add-reciter-tab">
+        <form id="addReciterForm" class="modal-form" onsubmit="event.preventDefault();">
+          <div class="form-group">
+            <label for="reciterName">اسم القارئ</label>
+            <input type="text" id="reciterName" placeholder="مثال: عبد الباسط عبد الصمد" required>
+          </div>
+          <div class="form-group">
+            <label for="reciterSub">الوصف / اللقب</label>
+            <input type="text" id="reciterSub" placeholder="مثال: صاحب الحنجرة الذهبية">
+          </div>
+          <div class="form-group">
+            <label for="reciterUrl">رابط سيرفر MP3 (Base URL)</label>
+            <input type="url" id="reciterUrl" placeholder="مثال: https://server7.mp3quran.net/basit/" required>
+            <span class="form-help">يجب أن ينتهي الرابط بـ / ويحتوي على ملفات mp3 للسور (مثل 001.mp3)</span>
+          </div>
+          <div class="form-group">
+            <label for="reciterAvatar">الحرف التعريفي (اختياري)</label>
+            <input type="text" id="reciterAvatar" maxlength="1" placeholder="مثال: ع">
+          </div>
+          <div class="modal-actions">
+            <button type="submit" class="btn btn-gold">إضافة القارئ</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="tab-content hidden" id="manage-reciters-tab">
+        <div class="admin-reciters-list" id="adminRecitersList">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript File -->
+  <script src="app.js"></script>
+</body>
+
+</html>
